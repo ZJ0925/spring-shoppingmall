@@ -20,7 +20,7 @@ public class ProductDaoImpl implements ProductDao {
     public Product getProductById(Integer id) {
         //執行SQL語法
         String sql = "SELECT product_id,product_name,category,image_url,price,stock,description,created_date,last_modified_date " +
-                "FROM product WHERE product_id = : product_id";
+                "FROM product WHERE product_id = :product_id";
         Map<String, Object> map = new HashMap<>();
         //map裡面放入Product的ID
         map.put("product_id", id);
