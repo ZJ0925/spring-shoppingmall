@@ -3,6 +3,7 @@ package com.zj.springshoppingmall.model;
 import java.util.Date;
 
 public class Product {
+    //宣告商品各個數據
    private Integer productId;
    private String productName;
    private String category;
@@ -13,6 +14,7 @@ public class Product {
    private Date createdDate;
    private Date lastModifiedDate;
 
+   //宣告個個數據的getter與setter
     public Integer getProductId() {
         return productId;
     }
