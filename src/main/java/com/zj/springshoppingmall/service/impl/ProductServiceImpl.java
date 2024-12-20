@@ -1,5 +1,6 @@
 package com.zj.springshoppingmall.service.impl;
 
+import com.zj.springshoppingmall.DataTransferObject.ProductRequest;
 import com.zj.springshoppingmall.dao.ProductDao;
 import com.zj.springshoppingmall.model.Product;
 import com.zj.springshoppingmall.service.ProductService;
@@ -16,5 +17,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product getProductById(Integer productId) {
         return productDao.getProductById(productId);
+    }
+
+    @Override
+    public Integer createProduct(ProductRequest productRequest) {
+        //呼叫DAO根據請求物件productRequest建一個新的產品資料。
+        return productDao.createProduct(productRequest);
     }
 }

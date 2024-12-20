@@ -1,13 +1,14 @@
 package com.zj.springshoppingmall.controller;
 
+import com.zj.springshoppingmall.DataTransferObject.ProductRequest;
 import com.zj.springshoppingmall.model.Product;
 import com.zj.springshoppingmall.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.jdbc.core.SqlOutParameter;
+import org.springframework.web.bind.annotation.*;
 
 //表示為一個Controller
 @RestController
@@ -38,4 +39,17 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
+    //新增商品的方法，從ProductRequest驗證參數不可以為null
+    //@RequestBody表示要從前端接住傳過來的json參數
+    //一定要加上@Valid這樣request上的@NotNull才會生效
+    @PostMapping("/products")
+    public ResponseEntity<Product> creatProduct(@RequestBody @Valid ProductRequest productRequest){
+        //此方法會創建商品出來
+        Integer productId = productService.createProduct(productRequest);
+        //從資料庫取得商品的數據
+        Product product = productService.getProductById(productId);
+        //回傳response狀態碼，body則是porduct數據
+        return ResponseEntity.status(HttpStatus.CREATED).body(product);
+    }
+
 }
