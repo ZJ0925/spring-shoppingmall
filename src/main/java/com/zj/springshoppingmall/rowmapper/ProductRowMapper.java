@@ -1,5 +1,6 @@
 package com.zj.springshoppingmall.rowmapper;
 
+import com.zj.springshoppingmall.constant.ProductCategory;
 import com.zj.springshoppingmall.model.Product;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -16,7 +17,15 @@ public class ProductRowMapper implements RowMapper<Product> {
         //可以取得product這個欄位的數據
         product.setProductId(rs.getInt("product_id"));
         product.setProductName(rs.getString("product_name"));
-        product.setCategory(rs.getString("category"));
+
+        //先設定一個字串可以去接住category的值
+        String categoryStr = rs.getString("category");
+        //再透過Enum裡valueOf的方法將字串去尋找ProductCategory裡固定的值
+        ProductCategory category = ProductCategory.valueOf(categoryStr);
+        //先get後set，如果Enum裡的固定值去跟資料庫作比對發現找不到的話就會顯示Error
+        product.setCategory(category);
+        //product.setCategory(ProductCategory.valueOf( rs.getString("category")));---->上方簡化版
+
         product.setImageUrl(rs.getString("image_url"));
         product.setPrice(rs.getInt("price"));
         product.setStock(rs.getInt("stock"));

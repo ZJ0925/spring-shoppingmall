@@ -1,12 +1,15 @@
 package com.zj.springshoppingmall.model;
 
+import com.zj.springshoppingmall.constant.ProductCategory;
+
 import java.util.Date;
 
 public class Product {
     //宣告商品各個數據
    private Integer productId;
    private String productName;
-   private String category;
+   //如果category是字串的話，就spingboot無法得知有甚麼類別，用Enum的可讀性會高一點，更動底層需要檢查rowmapper
+   private ProductCategory category;
    private String imageUrl;
    private Integer price;
    private Integer stock;
@@ -31,11 +34,11 @@ public class Product {
         this.productName = productName;
     }
 
-    public String getCategory() {
+    public ProductCategory getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(ProductCategory category) {
         this.category = category;
     }
 
@@ -43,8 +46,9 @@ public class Product {
         return imageUrl;
     }
 
-    public void setImageUrl(String imageUrl) {
+    public ProductCategory setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+        return null;
     }
 
     public Integer getPrice() {
