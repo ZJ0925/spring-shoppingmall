@@ -51,5 +51,28 @@ public class ProductController {
         //回傳response狀態碼，body則是porduct數據
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
     }
+    /*1.從HTTP請求URL的路徑中提取產品productId
+    @PathVariable表示從URL路徑中提取一個參數，並綁定到方法的參數productId。
+    @RequestBody表示要從前端接住傳過來的json參數
+    一定要加上@Valid這樣request上的@NotNull才會生效
+     */
 
+    @PutMapping("/products/{productId}")
+    public ResponseEntity<Product> updateProduct(@PathVariable Integer productId,
+                                                 @RequestBody @Valid ProductRequest productRequest){
+
+        //先使用productId檢查是否存在
+        Product product = productService.getProductById(productId);
+        //如果找不到產品
+        if(product == null){
+            //就顯示Response狀態404，並建立
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        //修改商品數據(productService會提供一個updateProduct的方法，參數為productId以及productRequest)
+        productService.updateProduct(productId, productRequest);
+        //顯示更新後的商品數據(上面商品修改方法成功後，就可以使用productId查詢更新後的商品)
+        Product updatedProduct = productService.getProductById(productId);
+        //回傳ResponseEntity狀態碼，body則是更新後的商品數據
+        return ResponseEntity.status(HttpStatus.OK).body(updatedProduct);
+    }
 }

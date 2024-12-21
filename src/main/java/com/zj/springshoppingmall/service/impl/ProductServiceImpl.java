@@ -24,4 +24,9 @@ public class ProductServiceImpl implements ProductService {
         //呼叫DAO根據請求物件productRequest建一個新的產品資料。
         return productDao.createProduct(productRequest);
     }
+
+    @Override
+    public void updateProduct(Integer productId, ProductRequest productRequest) {
+        productDao.updateProduct(productId, productRequest);
+    }
 }
