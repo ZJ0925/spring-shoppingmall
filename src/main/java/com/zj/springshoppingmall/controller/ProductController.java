@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 //表示為一個Controller
 @RestController
 public class ProductController {
@@ -16,6 +18,14 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    //List裝著product的數據，不管List有無數據，都回傳200狀態碼給前端，單一個才需要做判斷數據有無存在
+    @GetMapping("products")
+    public ResponseEntity<List< Product>> getProducts(){
+        //無任何參數，且會回傳一個商品的List回來
+        List<Product> productsList = productService.getProducts();
+        //回傳ResponseEntity狀態OK，且body填入products的List
+        return ResponseEntity.status(HttpStatus.OK).body(productsList);
+    }
 
     //取得model這個package的Product這個class的數據
     // @GetMapping表示要取得的是某一筆商品的數據

@@ -3,7 +3,11 @@ package com.zj.springshoppingmall.dao;
 import com.zj.springshoppingmall.DataTransferObject.ProductRequest;
 import com.zj.springshoppingmall.model.Product;
 
+import java.util.List;
+
 public interface ProductDao {
+
+    List<Product> getProducts();
     //查詢商品
     Product getProductById(Integer id);
     //新增商品
