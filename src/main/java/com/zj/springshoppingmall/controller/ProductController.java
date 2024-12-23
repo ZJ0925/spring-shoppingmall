@@ -7,7 +7,6 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.SqlOutParameter;
 import org.springframework.web.bind.annotation.*;
 
 //表示為一個Controller
@@ -60,7 +59,6 @@ public class ProductController {
     @PutMapping("/products/{productId}")
     public ResponseEntity<Product> updateProduct(@PathVariable Integer productId,
                                                  @RequestBody @Valid ProductRequest productRequest){
-
         //先使用productId檢查是否存在
         Product product = productService.getProductById(productId);
         //如果找不到產品
@@ -75,4 +73,14 @@ public class ProductController {
         //回傳ResponseEntity狀態碼，body則是更新後的商品數據
         return ResponseEntity.status(HttpStatus.OK).body(updatedProduct);
     }
+    //返回值為ResponseEntity，@PathVariable Integer productId表示productId的值是從URL路徑傳進來
+    @DeleteMapping("/products/{productId}")
+    public ResponseEntity<?> deleteProduct(@PathVariable Integer productId){
+        //productService會有一個叫deleteProductById的方法，傳入值為productId
+        productService.deleteProduct(productId);
+        //回傳ResponseEntity的狀態為NO_CONTENT(204)表示已經被刪除
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+    }
+
 }

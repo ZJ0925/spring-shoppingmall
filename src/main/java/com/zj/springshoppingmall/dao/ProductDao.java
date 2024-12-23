@@ -10,5 +10,6 @@ public interface ProductDao {
     Integer createProduct(ProductRequest productRequest);
     //更新商品
     void updateProduct(Integer productId, ProductRequest productRequest);
-
+    //刪除商品，刪除商品無返回值
+    void deleteProduct(Integer productId);
 }
