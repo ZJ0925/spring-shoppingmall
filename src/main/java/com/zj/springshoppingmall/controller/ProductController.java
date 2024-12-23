@@ -1,6 +1,7 @@
 package com.zj.springshoppingmall.controller;
 
 import com.zj.springshoppingmall.DataTransferObject.ProductRequest;
+import com.zj.springshoppingmall.constant.ProductCategory;
 import com.zj.springshoppingmall.model.Product;
 import com.zj.springshoppingmall.service.ProductService;
 import jakarta.validation.Valid;
@@ -20,9 +21,14 @@ public class ProductController {
 
     //List裝著product的數據，不管List有無數據，都回傳200狀態碼給前端，單一個才需要做判斷數據有無存在
     @GetMapping("products")
-    public ResponseEntity<List< Product>> getProducts(){
+    public ResponseEntity<List< Product>> getProducts(
+            // @RequestParam可以將 HTTP 請求的參數綁定到方法參數上，代表可以將分類的關鍵字連到URL上，required(必須的) = false，表示不一定需要
+           @RequestParam(required = false) ProductCategory category,
+           @RequestParam(required = false) String search
+
+    ){
         //無任何參數，且會回傳一個商品的List回來
-        List<Product> productsList = productService.getProducts();
+        List<Product> productsList = productService.getProducts(category, search);
         //回傳ResponseEntity狀態OK，且body填入products的List
         return ResponseEntity.status(HttpStatus.OK).body(productsList);
     }

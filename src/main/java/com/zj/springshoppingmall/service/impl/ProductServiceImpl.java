@@ -1,6 +1,7 @@
 package com.zj.springshoppingmall.service.impl;
 
 import com.zj.springshoppingmall.DataTransferObject.ProductRequest;
+import com.zj.springshoppingmall.constant.ProductCategory;
 import com.zj.springshoppingmall.dao.ProductDao;
 import com.zj.springshoppingmall.model.Product;
 import com.zj.springshoppingmall.service.ProductService;
@@ -17,8 +18,8 @@ public class ProductServiceImpl implements ProductService {
     private ProductDao productDao;
 
     @Override
-    public List<Product> getProducts() {
-        return productDao.getProducts();
+    public List<Product> getProducts(ProductCategory category, String search) {
+        return productDao.getProducts(category, search);
     }
 
     @Override
