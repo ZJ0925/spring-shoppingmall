@@ -1,5 +1,6 @@
 package com.zj.springshoppingmall.dao;
 
+import com.zj.springshoppingmall.DataTransferObject.ProductQueryParams;
 import com.zj.springshoppingmall.DataTransferObject.ProductRequest;
 import com.zj.springshoppingmall.constant.ProductCategory;
 import com.zj.springshoppingmall.model.Product;
@@ -8,7 +9,7 @@ import java.util.List;
 
 public interface ProductDao {
 
-    List<Product> getProducts(ProductCategory category, String search);
+    List<Product> getProducts(ProductQueryParams params);
     //查詢商品
     Product getProductById(Integer id);
     //新增商品

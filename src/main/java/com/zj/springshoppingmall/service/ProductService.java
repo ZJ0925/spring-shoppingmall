@@ -1,5 +1,6 @@
 package com.zj.springshoppingmall.service;
 
+import com.zj.springshoppingmall.DataTransferObject.ProductQueryParams;
 import com.zj.springshoppingmall.DataTransferObject.ProductRequest;
 import com.zj.springshoppingmall.constant.ProductCategory;
 import com.zj.springshoppingmall.model.Product;
@@ -9,7 +10,7 @@ import java.util.List;
 public interface ProductService {
 //先想返回值是甚麼，在想要使用甚麼方法才可以呼叫，最後填入所需要的參數
     //所有商品，為一個List的類型，裡面存放Product數據
-    List<Product> getProducts(ProductCategory category, String search);
+    List<Product> getProducts(ProductQueryParams params);
     //查詢商品，返回int
     Product getProductById(Integer id);
     //新增商品，返回int

@@ -1,7 +1,7 @@
 package com.zj.springshoppingmall.dao.impl;
 
+import com.zj.springshoppingmall.DataTransferObject.ProductQueryParams;
 import com.zj.springshoppingmall.DataTransferObject.ProductRequest;
-import com.zj.springshoppingmall.constant.ProductCategory;
 import com.zj.springshoppingmall.dao.ProductDao;
 import com.zj.springshoppingmall.model.Product;
 import com.zj.springshoppingmall.rowmapper.ProductRowMapper;
@@ -24,7 +24,7 @@ public class ProductDaoImpl implements ProductDao {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
-    public List<Product> getProducts(ProductCategory category, String search) {
+    public List<Product> getProducts(ProductQueryParams queryParams) {
         /*!!1=1!!是為了要拼接category的sql語句，因為WHERE 1=1 + AND product_category = :category才會有效
         而不是WHERE AND product_category = :category這種無效的語句
          */
@@ -33,21 +33,22 @@ public class ProductDaoImpl implements ProductDao {
         Map<String, Object> map = new HashMap<>();
 
         //如果輸入的分類不等於空值
-        if(category != null) {
+        if(queryParams.getCategory() != null) {
             //在原來的sql語法加入篩選分類的sql語法(AND前面要空格，才不會如果category不是null會連句在一起)
             productsSql = productsSql+ " AND product_category = :category";
             //並把分類的關鍵字加入到map裡(由於category為Enum類型，不是String，所以要透過name()來將Enum轉換為字串)
-            map.put("category", category.name());
+            map.put("category", queryParams.getCategory().name());
         }
 
-        if(search != null) {
+        if(queryParams.getSearch() != null) {
             // AND product_name LIKE :search意思為"以及product_name跟search有匹配的商品都顯示出來"
             productsSql = productsSql+ " AND product_name LIKE :search";
             //%關鍵字%為只要裡面有關鍵字就顯示，而"關鍵字%"表示開頭是關鍵字的才會顯示
             //模糊查詢一定要寫在map的值裡面才會生效
-            map.put("search","%" + search + "%");
+            map.put("search","%" + queryParams.getSearch() + "%");
         }
         //執行SQL語法,map以及ProductRowMapper將每一行商品數據顯示出來
+        //先把判斷式列出來後最後在整合sql語法
         List<Product> productList = namedParameterJdbcTemplate.query(productsSql, map, new ProductRowMapper());
         return productList;
     }

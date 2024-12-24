@@ -1,5 +1,6 @@
 package com.zj.springshoppingmall.controller;
 
+import com.zj.springshoppingmall.DataTransferObject.ProductQueryParams;
 import com.zj.springshoppingmall.DataTransferObject.ProductRequest;
 import com.zj.springshoppingmall.constant.ProductCategory;
 import com.zj.springshoppingmall.model.Product;
@@ -27,8 +28,11 @@ public class ProductController {
            @RequestParam(required = false) String search
 
     ){
+        ProductQueryParams productqueryparams = new ProductQueryParams();
+        productqueryparams.setCategory(category);
+        productqueryparams.setSearch(search);
         //無任何參數，且會回傳一個商品的List回來
-        List<Product> productsList = productService.getProducts(category, search);
+        List<Product> productsList = productService.getProducts(productqueryparams);
         //回傳ResponseEntity狀態OK，且body填入products的List
         return ResponseEntity.status(HttpStatus.OK).body(productsList);
     }
