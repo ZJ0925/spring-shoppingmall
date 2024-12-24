@@ -24,6 +24,31 @@ public class ProductDaoImpl implements ProductDao {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
+    public Integer countProduct(ProductQueryParams productQueryParams) {
+        //查詢product table中有多少筆商品的SQL語法
+        String countSql = "select count(*) from product WHERE 1=1";
+        Map<String, Object>map = new HashMap<>();
+        //如果輸入的分類不等於空值
+        if(productQueryParams.getCategory() != null) {
+            //在原來的sql語法加入篩選分類的sql語法(AND前面要空格，才不會如果category不是null會連句在一起)
+            countSql = countSql+ " AND product_category = :category";
+            //並把分類的關鍵字加入到map裡(由於category為Enum類型，不是String，所以要透過name()來將Enum轉換為字串)
+            map.put("category", productQueryParams.getCategory().name());
+        }
+
+        if(productQueryParams.getSearch() != null) {
+            // AND product_name LIKE :search意思為"以及product_name跟search有匹配的商品都顯示出來"
+            countSql = countSql+ " AND product_name LIKE :search";
+            //%關鍵字%為只要裡面有關鍵字就顯示，而"關鍵字%"表示開頭是關鍵字的才會顯示
+            //模糊查詢一定要寫在map的值裡面才會生效
+            map.put("search","%" + productQueryParams.getSearch() + "%");
+        }
+        //queryForObject使用時機為取count值的時候(SQLString, map變數, count值轉換為Integer的返回值)
+        Integer total = namedParameterJdbcTemplate.queryForObject(countSql, map, Integer.class);
+        return total;
+    }
+
+    @Override
     public List<Product> getProducts(ProductQueryParams productQueryParams) {
         /*!!1=1!!是為了要拼接category的sql語句，因為WHERE 1=1 + AND product_category = :category才會有效
         而不是WHERE AND product_category = :category這種無效的語句

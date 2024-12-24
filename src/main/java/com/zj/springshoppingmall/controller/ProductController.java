@@ -5,6 +5,7 @@ import com.zj.springshoppingmall.DataTransferObject.ProductRequest;
 import com.zj.springshoppingmall.constant.ProductCategory;
 import com.zj.springshoppingmall.model.Product;
 import com.zj.springshoppingmall.service.ProductService;
+import com.zj.springshoppingmall.util.Page;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -25,7 +26,7 @@ public class ProductController {
 
     //List裝著product的數據，不管List有無數據，都回傳200狀態碼給前端，單一個才需要做判斷數據有無存在
     @GetMapping("products")
-    public ResponseEntity<List< Product>> getProducts(
+    public ResponseEntity<Page<Product>> getProducts(
             //查詢條件Filtering
             // @RequestParam可以將 HTTP 請求的參數綁定到方法參數上，代表可以將分類的關鍵字連到URL上，required(必須的) = false，表示不一定需要
             @RequestParam(required = false) ProductCategory category,
@@ -44,17 +45,26 @@ public class ProductController {
 
     ){
         //要將ProductQueryParams這個class裡的參數帶進來就要用set，這樣才能取得到前端傳進來的limit與offset值
-        ProductQueryParams productqueryparams = new ProductQueryParams();
-        productqueryparams.setCategory(category);
-        productqueryparams.setSearch(search);
-        productqueryparams.setOrderBy(orderBy);
-        productqueryparams.setSort(sort);
-        productqueryparams.setLimit(limit);
-        productqueryparams.setOffset(offset);
+        ProductQueryParams productQueryParams = new ProductQueryParams();
+        productQueryParams.setCategory(category);
+        productQueryParams.setSearch(search);
+        productQueryParams.setOrderBy(orderBy);
+        productQueryParams.setSort(sort);
+        productQueryParams.setLimit(limit);
+        productQueryParams.setOffset(offset);
         //無任何參數，且會回傳一個商品的List回來
-        List<Product> productsList = productService.getProducts(productqueryparams);
+        List<Product> productsList = productService.getProducts(productQueryParams);
+        //在productService裡有一個countProduct的方法，會根據productQueryParams船進去的參數計算總筆數
+        Integer total = productService.countProduct(productQueryParams);
+        //把前端傳進來的limit、offset、total的值set到page裡面
+        Page<Product> page = new Page<>();
+        page.setLimit(limit);
+        page.setOffset(offset);
+        page.setTotal(total);
+        page.setResult(productsList);
+
         //回傳ResponseEntity狀態OK，且body填入products的List
-        return ResponseEntity.status(HttpStatus.OK).body(productsList);
+        return ResponseEntity.status(HttpStatus.OK).body(page);
     }
 
     //取得model這個package的Product這個class的數據

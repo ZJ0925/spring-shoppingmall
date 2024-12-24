@@ -2,6 +2,7 @@ package com.zj.springshoppingmall.service.impl;
 
 import com.zj.springshoppingmall.DataTransferObject.ProductQueryParams;
 import com.zj.springshoppingmall.DataTransferObject.ProductRequest;
+
 import com.zj.springshoppingmall.dao.ProductDao;
 import com.zj.springshoppingmall.model.Product;
 import com.zj.springshoppingmall.service.ProductService;
@@ -16,6 +17,11 @@ public class ProductServiceImpl implements ProductService {
     //將ProductDao注入就可以由service取得productDao的數據
     @Autowired
     private ProductDao productDao;
+
+    @Override
+    public Integer countProduct(ProductQueryParams productQueryParams) {
+        return productDao.countProduct(productQueryParams);
+    }
 
     @Override
     public List<Product> getProducts(ProductQueryParams productQueryParams) {
