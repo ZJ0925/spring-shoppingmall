@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ProductDao {
 
-    List<Product> getProducts(ProductQueryParams params);
+    List<Product> getProducts(ProductQueryParams productQueryParams);
     //查詢商品
     Product getProductById(Integer id);
     //新增商品

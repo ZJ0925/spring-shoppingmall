@@ -23,14 +23,22 @@ public class ProductController {
     //List裝著product的數據，不管List有無數據，都回傳200狀態碼給前端，單一個才需要做判斷數據有無存在
     @GetMapping("products")
     public ResponseEntity<List< Product>> getProducts(
+            //查詢條件Filtering
             // @RequestParam可以將 HTTP 請求的參數綁定到方法參數上，代表可以將分類的關鍵字連到URL上，required(必須的) = false，表示不一定需要
            @RequestParam(required = false) ProductCategory category,
-           @RequestParam(required = false) String search
+           @RequestParam(required = false) String search,
+
+           //排序的參數(defaultValue表示如果沒有傳入參數值，就傳入預設值)
+           @RequestParam(defaultValue = "created_date") String orderBy,//根據甚麼欄位「排序」(價錢、創建時間、更新時間...)
+          //sort預設為降序
+           @RequestParam(defaultValue = "desc") String sort //要使用升序還是降序
 
     ){
         ProductQueryParams productqueryparams = new ProductQueryParams();
         productqueryparams.setCategory(category);
         productqueryparams.setSearch(search);
+        productqueryparams.setOrderBy(orderBy);
+        productqueryparams.setSort(sort);
         //無任何參數，且會回傳一個商品的List回來
         List<Product> productsList = productService.getProducts(productqueryparams);
         //回傳ResponseEntity狀態OK，且body填入products的List
