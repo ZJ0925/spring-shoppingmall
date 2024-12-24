@@ -51,6 +51,11 @@ public class ProductDaoImpl implements ProductDao {
         //這裡只能字串拼接方式(僅限ORDER BY)，不設置判斷式原因為controller有設置defultValue
         //串接字串之前，必須在sql語句前後加入空格，避免連在一起
         productsSql = productsSql+ " ORDER BY " + productQueryParams.getOrderBy() + " " + productQueryParams.getSort();
+        //LIMIT與OFFSET的SQL連接Object語法
+        productsSql = productsSql+ " LIMIT :limit OFFSET :offset";
+        //要取得limit與offset的值就透過get取得再用map.put實作
+        map.put("limit", productQueryParams.getLimit());
+        map.put("offset", productQueryParams.getOffset());
         //執行SQL語法,map以及ProductRowMapper將每一行商品數據顯示出來
         //先把判斷式列出來後最後在整合sql語法
         List<Product> productList = namedParameterJdbcTemplate.query(productsSql, map, new ProductRowMapper());
