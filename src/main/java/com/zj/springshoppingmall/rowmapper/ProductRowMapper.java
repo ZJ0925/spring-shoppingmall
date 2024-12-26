@@ -14,7 +14,7 @@ public class ProductRowMapper implements RowMapper<Product> {
         //從model這個package中的Product這個class取得
         Product product = new Product();
         //re.getInt == resultSet.getInt
-        //可以取得product這個欄位的數據
+        //可以取得SQL中product這個欄位的數據
         product.setProductId(rs.getInt("product_id"));
         product.setProductName(rs.getString("product_name"));
 
