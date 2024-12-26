@@ -1,10 +1,15 @@
 package com.zj.springshoppingmall.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Date;
 
 public class User {
     private Integer userId;
+    @JsonProperty("e_mail") //客製化前端格式
     private String email;
+    @JsonIgnore //當springBoot在轉換User Object為json格式哦時候就會忽略此變數
     private String password;
     private Date createdDate;
     private Date lastmodifiedDate;

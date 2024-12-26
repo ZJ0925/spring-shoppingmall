@@ -27,12 +27,26 @@ public class UserDaoImpl implements UserDao {
         map.put("uesrId", userId);
         //使用rowmapper將資料庫的結果轉換成userList
         List<User> userList = namedParameterJdbcTemplate.query(sql, map, new UserRowMapper());
-        if(userList != null){
+        if(userList.size() > 0){
             return userList.get(0);
         }else{
             return null;
         }
 
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        String sql = "SELECT user_id , email, password, created_date, last_modified_date " +
+                "FROM user WHERE email= :email";
+        Map<String, Object> map = new HashMap<>();
+        map.put("email", email);
+        List<User> userList = namedParameterJdbcTemplate.query(sql, map, new UserRowMapper());
+        if(userList.size() > 0){
+            return userList.get(0);
+        }else{
+            return null;
+        }
     }
 
     @Override
