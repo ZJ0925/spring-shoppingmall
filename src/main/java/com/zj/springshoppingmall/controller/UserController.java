@@ -1,5 +1,6 @@
 package com.zj.springshoppingmall.controller;
 
+import com.zj.springshoppingmall.DataTransferObject.UserLoginRequest;
 import com.zj.springshoppingmall.DataTransferObject.UserRegisterRequest;
 import com.zj.springshoppingmall.model.User;
 import com.zj.springshoppingmall.service.UserService;
@@ -27,5 +28,16 @@ public class UserController {
         User user = userService.getUserById(userId);
         //回傳ResponseEntity給前端，並且狀態碼為201CREATED，body則是放user的數據
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    }
+    @PostMapping("/users/login")
+    //可再新增新的class來接住前端傳進來的login參數
+    //@RequestBody表示要接住前端傳進來的參數
+    //@Valid表示要驗證POST請求的requestbod參數
+    public ResponseEntity<User> login(@RequestBody @Valid UserLoginRequest userLoginRequest) {
+        //userService的login方法檢查userLoginRequest裡使用者傳進來的email和password
+        User user = userService.login(userLoginRequest);
+        //登入成功後就會回傳ResponseEntity的status為OK，且body為user數據
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+
     }
 }

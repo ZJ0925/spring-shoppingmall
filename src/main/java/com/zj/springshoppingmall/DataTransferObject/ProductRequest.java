@@ -2,7 +2,7 @@ package com.zj.springshoppingmall.DataTransferObject;
 
 import com.zj.springshoppingmall.constant.ProductCategory;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.lang.NonNull;
+
 
 
 public class ProductRequest {
