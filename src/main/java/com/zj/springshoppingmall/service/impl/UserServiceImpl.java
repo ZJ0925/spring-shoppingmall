@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
             //拋出Response狀態異常(BAD_REQUEST， HttpStatus = 400)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
-        //使用MD5生成密碼雜湊值
+        //使用MD5生成密碼雜湊值(已被彩虹表破解，反制方式為加鹽(Salt)強化Hash安全性)
         //將前端傳進來的參數轉換為byte後，使用DigestUtils裡的md5DigestAsHex方法在轉換為哈希
         String hashPassword = DigestUtils.md5DigestAsHex(userRegisterRequest.getPassword().getBytes());
         //將userRegisterRequest裡的密碼透過set的方式替換成hashPassword
