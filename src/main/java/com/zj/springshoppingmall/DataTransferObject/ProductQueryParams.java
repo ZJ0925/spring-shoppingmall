@@ -2,6 +2,7 @@ package com.zj.springshoppingmall.DataTransferObject;
 
 import com.zj.springshoppingmall.constant.ProductCategory;
 
+//DataTransferObject的package存放前端傳進來的參數
 //直接將前端的參數變成一個class，以後如果要新增參數就可以加進來透過getter與setter的方式處理
 public class ProductQueryParams {
     private ProductCategory category;

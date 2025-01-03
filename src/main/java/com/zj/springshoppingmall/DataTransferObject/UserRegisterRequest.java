@@ -3,6 +3,7 @@ package com.zj.springshoppingmall.DataTransferObject;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
+//DataTransferObject的package存放前端傳進來的參數
 //用來接住使用者傳遞的參數(email和密碼)
 public class UserRegisterRequest {
     @NotBlank//不可以為null以外以不可以是空白參數
