@@ -10,6 +10,7 @@ public class CreatedOrderRequest {
     @NotEmpty //驗證List或Map不可以為空，必須要友直存在
     private List<BuyItem> buyItemList;
 
+    //購買清單
     public List<BuyItem> getBuyItemList() {
         return buyItemList;
     }

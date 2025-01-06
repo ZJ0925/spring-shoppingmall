@@ -4,6 +4,7 @@ import com.zj.springshoppingmall.DataTransferObject.CreatedOrderRequest;
 import com.zj.springshoppingmall.service.OrderService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,9 +21,13 @@ public class OrderController {
     //@PathVariable表示從URL路徑中提取參數，並綁定到方法的參數userId。
     //@RequestBody裡要接住CreatedOrderRequest前端傳進來的參數
     //@Valid 表示要驗證POST請求的request body參數
-    @PostMapping("/users/{userId}/order")
+    @PostMapping("/users/{userId}/orders")
     public ResponseEntity<?> createOrder(@PathVariable Integer userId,
                                          @RequestBody @Valid CreatedOrderRequest createdOrderRequest) {
-        return null;
+
+        Integer orderId = orderService.createOrder(userId, createdOrderRequest);
+
+        //回傳Http狀態碼201，表示已成功請求建立，body為訂單ID
+        return ResponseEntity.status(HttpStatus.CREATED).body(orderId);
     }
 }
