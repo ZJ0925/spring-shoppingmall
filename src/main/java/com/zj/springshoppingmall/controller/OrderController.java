@@ -1,6 +1,7 @@
 package com.zj.springshoppingmall.controller;
 
 import com.zj.springshoppingmall.DataTransferObject.CreatedOrderRequest;
+import com.zj.springshoppingmall.model.Order;
 import com.zj.springshoppingmall.service.OrderService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,9 @@ public class OrderController {
 
         Integer orderId = orderService.createOrder(userId, createdOrderRequest);
 
+        //把從資料庫插入數據地的整筆訂單回傳給前端
+        Order order = orderService.getOrderById(orderId);
         //回傳Http狀態碼201，表示已成功請求建立，body為訂單ID
-        return ResponseEntity.status(HttpStatus.CREATED).body(orderId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(order);
     }
 }

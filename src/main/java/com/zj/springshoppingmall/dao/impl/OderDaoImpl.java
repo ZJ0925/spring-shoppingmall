@@ -1,7 +1,10 @@
 package com.zj.springshoppingmall.dao.impl;
 
 import com.zj.springshoppingmall.dao.OrderDao;
+import com.zj.springshoppingmall.model.Order;
 import com.zj.springshoppingmall.model.OrderItem;
+import com.zj.springshoppingmall.rowmapper.OrderItemRowMapper;
+import com.zj.springshoppingmall.rowmapper.OrderRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -19,7 +22,36 @@ public class OderDaoImpl implements OrderDao {
 
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    //訂單ID
+    @Override
+    public Order getOrderById(Integer orderId) {
+        String sql = "SELECT order_id, user_id, total_amount, created_date, " +
+                "last_modified_date FROM `order` WHERE order_Id = :orderId";
 
+        Map<String, Object> map = new HashMap<>();
+        map.put("orderId", orderId);
+
+        List<Order> orderList = namedParameterJdbcTemplate.query(sql, map, new OrderRowMapper());
+        if(orderList.size() > 0){
+            return orderList.get(0);
+        }else{
+            return null;
+        }
+
+    }
+    //訂單清單ID建立
+    @Override
+    public List<OrderItem> getOrderItemsByOrderId(Integer orderId) {
+        String sql = "SELECT oi.order_item_id, oi.order_id, oi.product_id, oi.quantity, " +
+                "oi.amount, p.product_name, p.image_url FROM order_item AS oi LEFT JOIN" +
+                "    product AS p ON oi.product_id = p.product_id WHERE oi.order_id = :orderId";
+        Map<String, Object> map = new HashMap<>();
+        map.put("orderId", orderId);
+        List<OrderItem> orderItemList = namedParameterJdbcTemplate.query(sql, map, new OrderItemRowMapper());
+        return orderItemList;
+    }
+
+    //訂單資料庫建立
     @Override
     public Integer CreateOrder(Integer userId, Integer totalAmount) {
         //如果table名稱有跟資料庫語法重疊，要用``標示(Tab上面那顆)
@@ -36,10 +68,10 @@ public class OderDaoImpl implements OrderDao {
         //儲存自動生成的主鍵值（如自增 OrderID）。
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource(map), keyHolder);
-        int orderId = keyHolder.getKey().intValue();
+        Integer orderId = keyHolder.getKey().intValue();
         return orderId;
     }
-
+    //訂單清單資料庫建立
     @Override
     public void createdOrderItems(Integer orderId, List<OrderItem> orderItemList) {
 
@@ -55,7 +87,6 @@ public class OderDaoImpl implements OrderDao {
 //            map.put("amount", orderItem.getAmount());
 //            namedParameterJdbcTemplate.update(sql, map);
 //        }
-
 
         String sql = "INSERT INTO order_item(order_id, product_id, quantity, amount) VALUES ( " +
                 ":orderId, :productId, :quantity, :amount)";

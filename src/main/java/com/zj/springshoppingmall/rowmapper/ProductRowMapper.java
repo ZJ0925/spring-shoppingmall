@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-//RoWMapper要使用JDB的，並在後面加入<Product>的泛型，表示要轉換成Product這個JAVA class
+//RoWMapper要使用JDBC的，並在後面加入<Product>的泛型，表示要轉換成Product這個JAVA class
 public class ProductRowMapper implements RowMapper<Product> {
     @Override
     public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
