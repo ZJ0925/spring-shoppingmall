@@ -7,10 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class OrderController {
@@ -32,5 +29,13 @@ public class OrderController {
         Order order = orderService.getOrderById(orderId);
         //回傳Http狀態碼201，表示已成功請求建立，body為訂單ID
         return ResponseEntity.status(HttpStatus.CREATED).body(order);
+    }
+
+    //取消訂單，傳入值為該user的ID以及user的訂單ID
+    @DeleteMapping("/users/{userId}/orders/{orderId}")
+    public ResponseEntity<?> deleteOrder(@PathVariable Integer orderId) {
+        orderService.deleteOrder(orderId);
+        return ResponseEntity.noContent().build();
+
     }
 }

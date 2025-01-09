@@ -11,6 +11,8 @@ public class User {
     private String email;
     @JsonIgnore //當springBoot在轉換User Object為json格式哦時候就會忽略此變數
     private String password;
+
+
     private Date createdDate;
     private Date lastmodifiedDate;
 
@@ -52,5 +54,14 @@ public class User {
 
     public void setLastmodifiedDtae(Date lastmodifiedDtae) {
         this.lastmodifiedDate = lastmodifiedDtae;
+    }
+
+
+    public Date getLastmodifiedDate() {
+        return lastmodifiedDate;
+    }
+
+    public void setLastmodifiedDate(Date lastmodifiedDate) {
+        this.lastmodifiedDate = lastmodifiedDate;
     }
 }

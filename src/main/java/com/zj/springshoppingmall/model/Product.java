@@ -2,6 +2,7 @@ package com.zj.springshoppingmall.model;
 
 import com.zj.springshoppingmall.constant.ProductCategory;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class Product {

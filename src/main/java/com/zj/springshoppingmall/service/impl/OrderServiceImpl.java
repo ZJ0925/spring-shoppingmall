@@ -107,4 +107,15 @@ public class OrderServiceImpl implements OrderService {
         orderDao.createdOrderItems(orderId, orderItemList);
         return orderId;
     }
+
+    @Override
+    public void deleteOrder(Integer orderId) {
+
+        if(orderDao.getOrderById(orderId) == null){
+            log.warn("查無此訂單");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        orderDao.deleteOrder(orderId);
+        orderDao.deleteOrderItems(orderId);
+    }
 }

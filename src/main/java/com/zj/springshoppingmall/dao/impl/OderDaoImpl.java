@@ -39,7 +39,24 @@ public class OderDaoImpl implements OrderDao {
         }
 
     }
-    //訂單清單ID建立
+
+    @Override
+    public Order getOrderByUserId(Integer userId) {
+        String sql = "SELECT order_id, user_id, total_amount, created_date, " +
+                "last_modified_date FROM `order` WHERE user_Id = :userId";
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+
+        List<Order> orderList = namedParameterJdbcTemplate.query(sql, map, new OrderRowMapper());
+        if(orderList.size() > 0){
+            return orderList.get(0);
+        }else{
+            return null;
+        }
+    }
+
+    //查詢訂單清單ID
     @Override
     public List<OrderItem> getOrderItemsByOrderId(Integer orderId) {
         String sql = "SELECT oi.order_item_id, oi.order_id, oi.product_id, oi.quantity, " +
@@ -94,7 +111,6 @@ public class OderDaoImpl implements OrderDao {
         for(int i = 0; i < orderItemList.size(); i++) {
 
             OrderItem orderItem = orderItemList.get(i);
-
             parameterSources[i] = new MapSqlParameterSource();
 
             //索引的第i組分別就放入i裡面的東西
@@ -109,9 +125,27 @@ public class OderDaoImpl implements OrderDao {
             parameterSources[i].addValue("productId", orderItem.getProductId());
             parameterSources[i].addValue("quantity", orderItem.getQuantity());
             parameterSources[i].addValue("amount", orderItem.getAmount());
-
         }
         //batchUpdated可以執行批量資料庫操作
         namedParameterJdbcTemplate.batchUpdate(sql, parameterSources);
+
+    }
+    //刪除訂單
+    @Override
+    public void deleteOrder(Integer orderId) {
+        String sql = "DELETE FROM `order` WHERE user_id = :userId AND order_id = :orderId";
+        Map<String, Object> map = new HashMap<>();
+        map.put("orderId", orderId);
+        namedParameterJdbcTemplate.update(sql, map);
+
+    }
+
+    //刪除訂單清單
+    @Override
+    public void deleteOrderItems(Integer orderId) {
+        String sql = "DELETE FROM `order_item` WHERE order_id = :orderId;";
+        Map<String, Object> map = new HashMap<>();
+        map.put("orderId", orderId);
+        namedParameterJdbcTemplate.update(sql, map);
     }
 }

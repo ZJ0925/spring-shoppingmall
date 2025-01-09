@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
         將前端傳進來的參數轉換為byte後，使用DigestUtils裡的md5DigestAsHex方法在轉換為哈希
         String hashPassword = DigestUtils.md5DigestAsHex(userRegisterRequest.getPassword().getBytes());
          */
-        //使用使用bcrypt對前端傳進來的註冊密碼進行加密
+        //使用bcrypt對前端傳進來的註冊密碼進行加密
         String encodedPassword = passwordEncoder.encode(userRegisterRequest.getPassword());
         //將userRegisterRequest裡的密碼透過set的方式替換成encodedPassword
         userRegisterRequest.setPassword(encodedPassword);
