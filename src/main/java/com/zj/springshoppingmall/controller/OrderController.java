@@ -36,6 +36,5 @@ public class OrderController {
     public ResponseEntity<?> deleteOrder(@PathVariable Integer orderId) {
         orderService.deleteOrder(orderId);
         return ResponseEntity.noContent().build();
-
     }
 }
